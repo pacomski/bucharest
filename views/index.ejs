@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+<% articles.forEach ( function ( article ) { %>
+
+    <div class="body"><%= article.title %></div>
+    <div class="body"><%= article.body %></div>
+
+<% } ) %>
+
+  </body>
+</html>
