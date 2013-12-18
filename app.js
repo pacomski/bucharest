@@ -57,8 +57,9 @@ app.get('/new', function(req, res) {
 
 app.post('/new', function(req, res){
     articleProvider.save({
-        title: req.param('title'),
-        body: req.param('body')
+        familyname: req.param('familyname'),
+        storie: req.param('storie')
+
     }, function( error, docs) {
         res.redirect('/')
     });
