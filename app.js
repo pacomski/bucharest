@@ -67,7 +67,6 @@ app.post('/new', function(req, res){
 
 
 
-
 app.get('/', routes.index);
 app.get('/users', user.list);
 
