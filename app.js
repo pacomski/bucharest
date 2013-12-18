@@ -48,14 +48,14 @@ app.get('/', function(req, res){
 
 
 // create new post
-app.get('/blog/new', function(req, res) {
-    res.render('blog_new.ejs', { locals: {
+app.get('/new', function(req, res) {
+    res.render('new-article.ejs', { locals: {
         title: 'New Post'
     }
     });
 });
 
-app.post('/blog/new', function(req, res){
+app.post('/new', function(req, res){
     articleProvider.save({
         title: req.param('title'),
         body: req.param('body')
