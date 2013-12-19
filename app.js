@@ -97,8 +97,8 @@ app.post('/new', function(req, res){
 // view post alone
 
 app.get('/post/:id', function(req, res) {
-    ArticleProvider.findById(req.params.id, function(error, article) {
-        res.render('alone-article.ejs',
+    postProvider.findById(req.params.id, function(error, article) {
+        res.render('alone-article',
         { locals: {
             title: article.title,
             article:article
