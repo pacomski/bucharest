@@ -107,6 +107,48 @@ app.get('/post/:id', function(req, res) {
     });
 });
 
+//edit post
+app.get('/post/:id/edit', function(req, res){
+  postProvider.updateById(req.params.id, function(error, article) {
+    res.render('edit-article', {
+      locals: {
+        title: article.familyname,
+        article:article
+      }
+    });
+  });
+});
+
+
+
+app.post('/post/:id/edit', function(req, res){
+    
+    var data = {};
+    _.each(req.body, function(val, key){
+        var k = parseKey(key);
+        console.log(k, val          );
+        var vv = null;
+        if(k.type == 'date'){
+            var tmpv = val.split('/');
+            vv = new Date(tmpv[0], tmpv[1], tmpv[2]);
+        }
+        else if(k.type == 'int'){
+            vv = parseInt(val);
+        }
+        else if(k.type == 'string'){
+            vv = val;
+        }
+        else{
+            throw "invalid data type";
+        }
+        data[k.value] = vv;
+    });
+    console.log(data);
+    postProvider.save(data  , function( error, docs) {
+        res.redirect('/')
+    });
+});
+
 
 
 app.get('/', routes.index);
