@@ -42,6 +42,7 @@ ArticleProvider.prototype.findById = function(id, callback) {
     });
 };
 
+
 ArticleProvider.prototype.save = function(articles, callback) {
     this.getCollection(function(error, article_collection) {
       if( error ) callback(error)

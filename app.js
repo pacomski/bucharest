@@ -9,6 +9,7 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var _ = require('underscore');
 
 var app = express();
 
@@ -33,11 +34,11 @@ if ('development' == app.get('env')) {
 }
 
 // blog articles in db
-var articleProvider= new ArticleProvider('localhost', 27017);
+var postProvider= new ArticleProvider('localhost', 27017);
 
 // Routes
 app.get('/', function(req, res){
-    articleProvider.findAll( function(error,docs){
+    postProvider.findAll( function(error,docs){
         res.render('index.ejs', { locals: {
             title: 'Blog',
             articles:docs
@@ -55,13 +56,54 @@ app.get('/new', function(req, res) {
     });
 });
 
-app.post('/new', function(req, res){
-    articleProvider.save({
-        familyname: req.param('familyname'),
-        storie: req.param('storie')
+function parseKey(truc){
+    var aa = truc.split('-');
+    return {
+        type: aa[1] || 'string',
+        value : aa[0],
+    };
+};
 
-    }, function( error, docs) {
-        res.redirect('/')
+app.post('/new', function(req, res){
+    
+    var data = {};
+    _.each(req.body, function(val, key){
+        var k = parseKey(key);
+        console.log(k, val          );
+        var vv = null;
+        if(k.type == 'date'){
+            var tmpv = val.split('/');
+            vv = new Date(tmpv[0], tmpv[1], tmpv[2]);
+        }
+        else if(k.type == 'int'){
+            vv = parseInt(val);
+        }
+        else if(k.type == 'string'){
+            vv = val;
+        }
+        else{
+            throw "invalid data type";
+        }
+        data[k.value] = vv;
+    });
+    console.log(data);
+    postProvider.save(data  , function( error, docs) {
+        res.redirect('/new')
+    });
+});
+
+
+
+// view post alone
+
+app.get('/post/:id', function(req, res) {
+    ArticleProvider.findById(req.params.id, function(error, article) {
+        res.render('alone-article.ejs',
+        { locals: {
+            title: article.title,
+            article:article
+        }
+        });
     });
 });
 

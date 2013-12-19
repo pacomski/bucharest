@@ -10,8 +10,8 @@
 
 <% articles.forEach ( function ( article ) { %>
 
-    <div class="familyname"><%= article.familyname %></div>
-    <div class="storie"><%= article.storie %></div>
+    <div class="familyname" postId="<%= article._id %>"><a href="post/<%= article._id.toHexString() %>"><%= article.familyname %></a></div>
+    <div class="story"><%= article.story %></div>
 
 <% } ) %>
 
